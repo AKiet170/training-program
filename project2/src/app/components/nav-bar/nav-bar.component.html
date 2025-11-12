@@ -1,9 +1,27 @@
-<header>
-  <nav>
-    <ul class='flex space-x-4'>
-      <li routerLink="/weather">Weather</li>
-      <li routerLink="/tasks">Tasks</li>
-      <li routerLink="/expenses">Expenses</li>
+<header class="bg-white shadow-md">
+  <nav class="container px-4 py-4 flex justify-between items-center">
+    <ul class="flex space-x-2">
+      <li>
+        <a routerLink="/weather" 
+           routerLinkActive="bg-indigo-600 text-white"
+           class="cursor-pointer px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200">
+           Weather
+        </a>
+      </li>
+      <li>
+        <a routerLink="/tasks" 
+           routerLinkActive="bg-indigo-600 text-white"
+           class="cursor-pointer px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200">
+           Tasks
+        </a>
+      </li>
+      <li>
+        <a routerLink="/expenses" 
+           routerLinkActive="bg-indigo-600 text-white"
+           class="cursor-pointer px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200">
+           Expenses
+        </a>
+      </li>
     </ul>
   </nav>
 </header>
