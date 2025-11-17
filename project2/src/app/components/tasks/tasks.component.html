@@ -1,1 +1,13 @@
-<p>tasks works!</p>
+<h3 class='text-xl'>Personal Tasks</h3>
+<ul nz-list [nzDataSource]="data" nzBordered nzSize="large">
+    @for (item of data; track item) {
+    <li nz-list-item nzNoFlex>
+        <ul nz-list-item-actions>
+            <nz-list-item-action>
+                <a (click)="msg.info('edit')">edit</a>
+            </nz-list-item-action>
+        </ul>
+        {{ item }}
+    </li>
+    }
+</ul>

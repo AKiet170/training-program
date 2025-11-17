@@ -1,19 +1,33 @@
-<div>
-    <div class='flex items-center justify-center gap-8'>
-        <div>
-            <div>Dự báo thời tiết</div>
-            <div>TP.Hồ Chí Minh</div>
+<div class='flex items-center justify-center'>
+<div class="p-10 bg-white w-[1000px] rounded-xl border border-gray-200 shadow-sm font-sans">
+
+    <div class="grid grid-cols-3 items-center mb-12">
+
+        <div class="text-center">
+            <div class="text-3xl font-bold text-gray-600 uppercase tracking-wide">{{city}}</div>
+            <div class="text-xl text-gray-500 uppercase tracking-widest mt-1">Weather</div>
         </div>
-        <div>Weather image</div>
-        <div>
-            <div>27°C</div>
-            <div>Nhiều mây</div>
+
+        <div class="flex justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-24 h-24 text-gray-600">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+            </svg>
+        </div>
+
+        <div class="text-center">
+            <div class="text-6xl text-gray-600 font-light tracking-tight">{{temp}}°C</div>
+            <div class="text-black text-lg mt-2">{{condition}}</div>
         </div>
     </div>
 
-    <div class='flex items-center justify-center gap-16 mt-8'>
-        <div>City Name</div>
-        <div>Date and Time</div>
-        <div>Date and Time</div>
+    <div class="flex items-center justify-center px-8 text-black italic text-lg gap-16">
+        <div>humidity: {{humidity}}%</div>
+        <div>wind: {{windSpeed}}m/s</div>
+        <div>cloud cover: {{cloudCover}}%</div>
     </div>
+
 </div>
+</div>
+
