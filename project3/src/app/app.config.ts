@@ -8,6 +8,7 @@ import en from '@angular/common/locales/en';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngxs/store';
+import { PokemonState } from './store/pokemon-list/pokemon.state';
 
 registerLocaleData(en);
 
@@ -16,7 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes), provideNzI18n(en_US), provideAnimationsAsync(), provideHttpClient(), provideStore(
-[],
-)
+[PokemonState]),
   ]
 };

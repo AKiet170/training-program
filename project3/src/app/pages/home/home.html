@@ -1,12 +1,11 @@
 <app-search-bar></app-search-bar>
 
 <h1 class="text-2xl font-semibold">Pokémon List</h1>
-
     <div class="gutter-example">
       <div nz-row [nzGutter]="[hGutter, vGutter]">
-        @for (i of array; track $index) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count">
-            <app-card-list></app-card-list>
+        @for (pokemon of pokemons$ | async; track pokemon.name) {
+          <div nz-col class="gutter-row" [nzSpan]="6">
+            <app-card-list [pokemon] = "pokemon"></app-card-list>
           </div>
         }
       </div>

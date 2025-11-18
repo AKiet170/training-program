@@ -36,11 +36,16 @@
 }
 
 nz-content {
-  padding: 24px 50px;
+  /* Đảm bảo content cha chiếm không gian */
+  flex: 1; 
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
 }
 
-.inner-content {
-  padding: 24px;
-  background: #fff;
-  height: 100%;
-}
+ .inner-content {
+   background: #fff;
+   padding: 42px;
+   flex-grow: 1; 
+ } 
