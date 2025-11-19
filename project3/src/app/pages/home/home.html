@@ -5,7 +5,7 @@
       <div nz-row [nzGutter]="[hGutter, vGutter]">
         @for (pokemon of pokemons$ | async; track pokemon.name) {
           <div nz-col class="gutter-row" [nzSpan]="6">
-            <app-card-list [pokemon] = "pokemon"></app-card-list>
+            <app-card [pokemon] = "pokemon"></app-card>
           </div>
         }
       </div>

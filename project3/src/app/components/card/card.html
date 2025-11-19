@@ -1,0 +1,36 @@
+<div style="background: #ECECEC; padding:30px;">
+  <nz-card style="width: 250px;" [nzBordered]="false" [nzTitle]="pokemon.name" [nzExtra]="extraTemplate">
+    <button nz-button nzType="primary" (click)="showModalMiddle()">Details</button>
+    
+    <nz-modal
+      [(nzVisible)]="isVisibleMiddle"
+      nzTitle="Chi tiết Pokémon: {{ pokemon.name }}" 
+      nzCentered
+      (nzOnCancel)="handleCancelMiddle()"
+      (nzOnOk)="handleOkMiddle()"
+    >
+      <ng-container *nzModalContent>
+        <div *ngIf="isLoading$ | async; else loadedContent">
+          <nz-spin nzSimple [nzSize]="'large'" style="display: flex; justify-content: center; padding: 50px;"></nz-spin>
+        </div>
+
+        <ng-template #loadedContent>
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img [src]="imgUrl$ | async" alt="Pokemon Sprite" style="width: 150px; height: 150px;" />
+          </div>
+
+          <p>Thông số cơ bản:</p>
+          <ul *ngIf="stats$ | async as stats">
+            @for (stat of stats; track stat.stat.name) {
+               <li>
+                 {{ stat.stat.name | uppercase }}: 
+                 <span style="font-weight: bold;">{{ stat.base_stat }}</span>
+               </li>
+            }
+          </ul>
+        </ng-template>
+        
+      </ng-container>
+    </nz-modal>
+  </nz-card>
+</div>

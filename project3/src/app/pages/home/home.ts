@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
-import { CardList } from '../../components/card/card-list';
+import { Card } from '../../components/card/card';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { PokemonActions } from '../../store/pokemon-list/pokemon.actions';
@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, NzGridModule, NzSliderModule, SearchBar, CardList, AsyncPipe],
+  imports: [FormsModule, NzGridModule, NzSliderModule, SearchBar, Card, AsyncPipe],
   templateUrl: './home.html',
   styleUrl: './home.scss'
   

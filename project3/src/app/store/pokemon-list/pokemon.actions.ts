@@ -1,7 +1,6 @@
 export enum Actions {
   GET_POKEMON_LIST = '[Pokemon] Get Pokemon List',
-  GET_POKEMON_DETAILS = '[Pokemon] Get Pokemon Details',
-  GET_POKEMON_BY_FAVORITE = '[Pokemon] Get Pokemon By Favorite',
+  GET_FAVORITE_POKEMONS = '[Pokemon] Get Favorite Pokemons',
 }
 
 export namespace PokemonActions {
@@ -10,13 +9,8 @@ export namespace PokemonActions {
     constructor() {}
   }
 
-  export class GetPokemonDetails {
-    static type = Actions.GET_POKEMON_DETAILS;
-    constructor(public payload: any) {}
-  }
-
-  export class GetPokemonByFavorite {
-    static type = Actions.GET_POKEMON_BY_FAVORITE;
+  export class GetFavoritePokemons {
+    static type = Actions.GET_FAVORITE_POKEMONS;
     constructor() {};
   }
 }
