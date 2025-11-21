@@ -45,7 +45,7 @@ export class PokemonDetailsState {
     return state.isLoading;
   }
 
-  @Action(PokemonDetailsAction)
+@Action(PokemonDetailsAction)
 getPokemonDetails(ctx: StateContext<PokemonDetailsStateModel>, action: PokemonDetailsAction) {
 
   ctx.patchState({ isLoading: true });

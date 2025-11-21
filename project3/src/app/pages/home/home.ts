@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { PokemonActions } from '../../store/pokemon-list/pokemon.actions';
 import { Pokemon, PokemonState } from '../../store/pokemon-list/pokemon.state';
 import { AsyncPipe } from '@angular/common';
+import { FavoriteActions } from '../../store/favorite/favorite.actions';
 
 
 @Component({
@@ -29,14 +30,25 @@ export class Home implements OnInit {
   count$!: Observable<number>;
   loading$!: Observable<boolean>;
 
+  searchResults: string = '';
+
   constructor(private store: Store) {
-    this.pokemons$ = this.store.select(PokemonState.getPokemonList);
+    this.pokemons$ = this.store.select(PokemonState.getCombinedList);
     this.count$ = this.store.select(PokemonState.getCount);
     this.loading$ = this.store.select(PokemonState.isLoading);
   }
 
+  handleSearch(searchTerm: string) {
+    console.log('Search term submitted:', searchTerm);
+    this.store.dispatch(new PokemonActions.SearchPokemon(searchTerm));
+
+  }
+
   ngOnInit() {
     this.store.dispatch(new PokemonActions.GetPokemonList());
+    
+    //Đông bộ hóa danh sách yêu thích khi trang được tải lại
+    this.store.dispatch(new FavoriteActions.LoadFavorites());
   };
 
 }

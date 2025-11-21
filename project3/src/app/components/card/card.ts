@@ -9,6 +9,7 @@ import { PokemonDetailsState } from '../../store/pokemon-details/pokemon-details
 import { Store } from '@ngxs/store';
 import { PokemonDetailsAction } from '../../store/pokemon-details/pokemon-details.actions';
 import { NzSpinModule } from 'ng-zorro-antd/spin'; 
+import { FavoriteActions } from '../../store/favorite/favorite.actions';
 
 
 @Component({
@@ -36,11 +37,9 @@ export class Card implements OnInit {
 
 
   @Input() pokemon!: any;
-  firstPokemon: any;
 
   isVisibleTop = false;
   isVisibleMiddle = false;
-  isFavorite = false;
 
   showModalTop(): void {
     this.isVisibleTop = true;
@@ -65,7 +64,7 @@ export class Card implements OnInit {
   }
 
   toggleFav() {
-    this.isFavorite = !this.isFavorite;
+    this.store.dispatch(new FavoriteActions.ToggleFavorite(this.pokemon.name));
   }
 
   showModalMiddle(): void {

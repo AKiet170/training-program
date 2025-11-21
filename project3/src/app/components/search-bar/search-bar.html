@@ -1,2 +1,23 @@
+<div class="flex items-center space-x-2 p-4 bg-white shadow-lg rounded-xl max-w-xl mx-auto mt-6">
+  
+  <input
+    type="text"
+    placeholder="Nhập tên Pokémon (Ví dụ: ditto)..."
+    
+    [(ngModel)]="searchTerm"
+    
+    (keyup.enter)="onSearch()"
+    
+    class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
 
-<p class='text-red-600'>search-bar works!</p>
+  <button
+    nz-button
+    nzType="primary"
+    (click)="onSearch()"
+    class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 flex items-center"
+  >
+    <span nz-icon nzType="search" nzTheme="outline"></span>
+    <span class="ml-1 hidden sm:inline">Tìm</span>
+  </button>
+</div>

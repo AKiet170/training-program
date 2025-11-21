@@ -1,36 +1,45 @@
-<div style="background: #ECECEC; padding:30px;">
-  <nz-card style="width: 250px;" [nzBordered]="false" [nzTitle]="pokemon.name" [nzExtra]="extraTemplate">
+<div class="flex flex-wrap justify-center items-center bg-gray-100 p-8">
+  <nz-card class="w-64 shadow-lg rounded-x" [nzBordered]="false" [nzTitle]="pokemon.name" [nzExtra]="extraTemplate">
     <button nz-button nzType="primary" (click)="showModalMiddle()">Details</button>
-    
-    <nz-modal
-      [(nzVisible)]="isVisibleMiddle"
-      nzTitle="Chi tiết Pokémon: {{ pokemon.name }}" 
-      nzCentered
-      (nzOnCancel)="handleCancelMiddle()"
-      (nzOnOk)="handleOkMiddle()"
-    >
+
+    <nz-modal [(nzVisible)]="isVisibleMiddle" nzTitle="Chi tiết Pokémon: {{ pokemon.name }}" nzCentered
+      (nzOnCancel)="handleCancelMiddle()" (nzOnOk)="handleOkMiddle()">
+      <!--Lazy loading-->
       <ng-container *nzModalContent>
         <div *ngIf="isLoading$ | async; else loadedContent">
-          <nz-spin nzSimple [nzSize]="'large'" style="display: flex; justify-content: center; padding: 50px;"></nz-spin>
+          <nz-spin nzSimple [nzSize]="'large'" class="flex justify-center p-12"></nz-spin>
         </div>
 
+        <!--Pokemon img-->
         <ng-template #loadedContent>
-          <div style="text-align: center; margin-bottom: 20px;">
-            <img [src]="imgUrl$ | async" alt="Pokemon Sprite" style="width: 150px; height: 150px;" />
+          <div class="text-center mb-5">
+            <img [src]="imgUrl$ | async" alt="Pokemon Sprite" class="w-40 h-40 mx-auto" />
           </div>
 
-          <p>Thông số cơ bản:</p>
-          <ul *ngIf="stats$ | async as stats">
+          <!-- Stats charts -->
+          <p class="text-lg font-semibold mb-2">Thông số cơ bản:</p>
+          <ul class="list-none p-0 space-y-2" *ngIf="stats$ | async as stats">
             @for (stat of stats; track stat.stat.name) {
-               <li>
-                 {{ stat.stat.name | uppercase }}: 
-                 <span style="font-weight: bold;">{{ stat.base_stat }}</span>
-               </li>
+            <li class="flex justify-between border-b border-gray-200 pb-1">
+              {{ stat.stat.name | uppercase }}:
+              <span class="text-sm font-medium text-gray-600">{{ stat.base_stat }}</span>
+            </li>
             }
           </ul>
         </ng-template>
-        
       </ng-container>
+      <ng-template #extraTemplate>
+        <button nz-button nzType="text" nzShape="circle" nzSize="small" (click)="toggleFav()">
+          <span 
+      nz-icon 
+      nzType="heart" 
+      
+      [nzTheme]="pokemon.isFavorite ? 'fill' : 'outline'"
+      
+      [style.color]="pokemon.isFavorite ? 'red' : ''"
+    ></span>
+        </button>
+      </ng-template>
     </nz-modal>
   </nz-card>
 </div>
