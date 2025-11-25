@@ -1,6 +1,7 @@
 export enum Actions {
   GET_POKEMON_LIST = '[Pokemon] Get Pokemon List',
   GET_POKEMON_BY_SEARCH = '[Pokemon] Get Pokemon By Search',
+  GET_POKEMON_RARITY = '[Pokemon] Get pokemon rarity'
 }
 
 export namespace PokemonActions {
@@ -12,5 +13,5 @@ export namespace PokemonActions {
   export class SearchPokemon {
   static readonly type = '[Pokemon] Search By Term';
   constructor(public name: string) {}
-}
+  }
 }

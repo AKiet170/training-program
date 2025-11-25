@@ -30,4 +30,9 @@ export class PokemonService {
     const url = `${this.apiUrl}${name}`;
     return this.http.get<any>(url);
   }
+
+  getPokemonSpecies(name: string): Observable<any> {
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon-species/${name}`;
+    return this.http.get<any>(apiUrl);
+  }
 }

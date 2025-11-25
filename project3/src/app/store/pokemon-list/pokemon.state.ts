@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { PokemonActions } from './pokemon.actions';
 import { PokemonService } from '../../services/pokemon';
@@ -20,12 +20,16 @@ export interface PokemonResponse {
   results: Pokemon[];
 }
 
+
+
 export interface PokemonStateModel {
   pokemonList: Pokemon[];
   count: number;
   loading: boolean;
+  next: string | null;
+  previous: string | null;
   searchResult: any | null;
-  error: string | null; // Nên có để báo lỗi
+  error: string | null; 
 }
 
 
@@ -35,6 +39,8 @@ export interface PokemonStateModel {
     pokemonList: [],
     count: 0,
     loading: false,
+    next: '',
+    previous: '',
     searchResult: null,
     error: null,
   },
@@ -71,7 +77,7 @@ export class PokemonState {
         isFavorite: favoriteSet.has(pokemon.name),
       }));
     }
-    
+
     // Nếu không, trả về danh sách đầy đủ
     displayList = state.pokemonList;
 
@@ -87,12 +93,14 @@ export class PokemonState {
       loading: true,
     });
 
-    return this.pokemonService.getPokemonList().pipe(
+    return this.pokemonService.getPokemonList().pipe( 
       tap((response: PokemonResponse) => {
         ctx.patchState({
           pokemonList: response.results,
           count: response.count,
           loading: false,
+          previous: response.previous,
+          next: response.next,
         });
       })
     );

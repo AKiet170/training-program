@@ -1,0 +1,29 @@
+/* card.scss hoặc styles.scss */
+
+/* Viền mặc định cho Card thường */
+.border-default {
+  @apply border-gray-300;
+}
+
+/* Viền Pokemon Phổ thông */
+.border-common {
+  @apply border-green-400;
+}
+
+/* Viền Pokemon Huyền thoại (Ví dụ: Màu vàng hoặc cam đậm) */
+.border-legendary {
+  @apply border-yellow-500 shadow-lg shadow-yellow-500/50;
+  border-width: 5px; /* Dày hơn */
+}
+
+/* Viền Pokemon Thần thoại (Ví dụ: Màu tím Holo/Rainbow - Áp dụng kỹ thuật CSS Gradient) */
+.border-mythical {
+  border-width: 5px;
+  /* Kỹ thuật CSS Gradient cho viền Holo */
+  border-style: solid;
+  border-image: linear-gradient(
+    45deg,
+    #9400d3, #ff0000, #ff7f00, #00ffff, #ff00ff, #9400d3
+  ) 1;
+  @apply shadow-xl shadow-purple-600/70;
+}

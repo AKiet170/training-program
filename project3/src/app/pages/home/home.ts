@@ -6,7 +6,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 import { Card } from '../../components/card/card';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { PokemonActions } from '../../store/pokemon-list/pokemon.actions';
 import { Pokemon, PokemonState } from '../../store/pokemon-list/pokemon.state';
 import { AsyncPipe } from '@angular/common';
@@ -49,6 +49,5 @@ export class Home implements OnInit {
     
     //Đông bộ hóa danh sách yêu thích khi trang được tải lại
     this.store.dispatch(new FavoriteActions.LoadFavorites());
-  };
-
+  }
 }
