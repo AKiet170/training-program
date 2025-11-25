@@ -18,6 +18,27 @@ export interface CardViewModel {
   isFavorite: boolean;
 }
 
+const TYPE_ICON_MAP: { [key: string]: string } = {
+  'fire': 'assets/icons/fire.svg',
+  'water': 'assets/icons/water.svg',
+  'grass': 'assets/icons/grass.svg',
+  'electric': 'assets/icons/electric.svg',
+  'normal': 'assets/icons/normal.svg',
+  'fairy': 'assets/icons/fairy.svg',
+  'dark': 'assets/icons/dark.svg',
+  'bug': 'assets/icons/bug.svg',
+  'dragon': 'assets/icons/dragon.svg',
+  'fighting': 'assets/icons/fighting.svg',
+  'flying': 'assets/icons/flying.svg',
+  'ghost': 'assets/icons/ghost.svg',
+  'ground': 'assets/icons/ground.svg',
+  'ice': 'assets/icons/ice.svg',
+  'poison': 'assets/icons/poison.svg',
+  'psychic': 'assets/icons/psychic.svg',
+  'rock': 'assets/icons/rock.svg',
+  'steel': 'assets/icons/steel.svg',
+  'default': 'assets/icons/default.svg' 
+};
 
 @Component({
   selector: 'app-card',

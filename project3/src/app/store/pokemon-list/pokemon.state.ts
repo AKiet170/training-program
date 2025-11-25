@@ -23,7 +23,6 @@ export interface PokemonStateModel {
   pokemonList: Pokemon[];          // Danh sách hiển thị (20 con hoặc 1 con khi search)
   pokemonDetailsMap: Record<string, any>; // Kho chứa dữ liệu chi tiết (Dùng chung cho cả Card và Modal)
   selectedPokemonName: string | null;     // Tên Pokemon đang được mở Modal
-  
   count: number;
   loading: boolean;
   next: string | null;

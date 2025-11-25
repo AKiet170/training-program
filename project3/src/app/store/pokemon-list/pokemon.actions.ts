@@ -1,7 +1,8 @@
 export enum Actions {
   GET_POKEMON_LIST = '[Pokemon] Get Pokemon List',
   GET_POKEMON_BY_SEARCH = '[Pokemon] Get Pokemon By Search',
-  GET_POKEMON_RARITY = '[Pokemon] Get pokemon rarity'
+  GET_POKEMON_RARITY = '[Pokemon] Get pokemon rarity',
+  GET_FAVORITE_LIST = '[Pokemon] Get favorite list'
 }
 
 export namespace PokemonActions {
@@ -17,5 +18,10 @@ export namespace PokemonActions {
   export class GetPokemonDetails {
     static readonly type = '[Pokemon] Get Details (For Modal)';
     constructor(public name: string) {}
+  }
+
+  export class GetFavoriteList {
+    static type = Actions.GET_FAVORITE_LIST;
+    constructor () {}
   }
 }
