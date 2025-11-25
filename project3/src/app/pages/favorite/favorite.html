@@ -3,7 +3,7 @@
 <h1 class="text-2xl font-semibold border-b-2 border-gray-300">Favorite Pokémon</h1>
     <div class="gutter-example pt-5">
       <div nz-row [nzGutter]="[hGutter, vGutter]">
-        @for (pokemon of pokemons$ | async; track pokemon.name) {
+        @for (pokemon of cardViewModel$ | async; track pokemon.name) {
             @if (pokemon.isFavorite) {
           <div nz-col class="gutter-row" [nzSpan]="6">
             <app-card [pokemon] = "pokemon "></app-card>

@@ -1,29 +1,27 @@
-/* card.scss hoặc styles.scss */
-
 /* Viền mặc định cho Card thường */
 .border-default {
-  @apply border-gray-300;
+  border-color: #d1d5db; 
 }
 
 /* Viền Pokemon Phổ thông */
 .border-common {
-  @apply border-green-400;
+  border-color: #48bb78;
 }
 
-/* Viền Pokemon Huyền thoại (Ví dụ: Màu vàng hoặc cam đậm) */
+/* Viền Pokemon Huyền thoại */
 .border-legendary {
-  @apply border-yellow-500 shadow-lg shadow-yellow-500/50;
-  border-width: 5px; /* Dày hơn */
+  border-color: #f6bf4c; 
+  border-width: 5px; 
+  box-shadow: 0 10px 15px -3px rgba(246, 191, 76, 0.5), 0 4px 6px -2px rgba(246, 191, 76, 0.5); 
 }
 
-/* Viền Pokemon Thần thoại (Ví dụ: Màu tím Holo/Rainbow - Áp dụng kỹ thuật CSS Gradient) */
+/* Viền Pokemon Thần thoại*/
 .border-mythical {
-  border-width: 5px;
-  /* Kỹ thuật CSS Gradient cho viền Holo */
-  border-style: solid;
-  border-image: linear-gradient(
-    45deg,
-    #9400d3, #ff0000, #ff7f00, #00ffff, #ff00ff, #9400d3
-  ) 1;
+  border: 5px solid transparent;
+  border-radius: 0.75rem; 
+  background-image: linear-gradient(#fff, #fff), 
+                    linear-gradient(45deg, #9400d3, #ff0000, #ff7f00, #00ffff, #ff00ff, #9400d3);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
   @apply shadow-xl shadow-purple-600/70;
 }

@@ -18,21 +18,21 @@ import { SearchBar } from '../../components/search-bar/search-bar';
   styleUrl: './favorite.scss',
 })
 export class Favorite implements OnInit {
-    hGutter = 48;
+  hGutter = 48;
   vGutter = 48;
   count = 4;
   array = new Array(20);
 
-  pokemons$!: Observable<Pokemon[]>;
   count$!: Observable<number>;
   loading$!: Observable<boolean>;
+  cardViewModel$!: Observable<any[]>;
 
   searchResults: string = '';
 
   constructor(private store: Store) {
-    this.pokemons$ = this.store.select(PokemonState.getCombinedList);
     this.count$ = this.store.select(PokemonState.getCount);
     this.loading$ = this.store.select(PokemonState.isLoading);
+    this.cardViewModel$ = this.store.select(PokemonState.getCardViewModel)
   }
 
   handleSearch(searchTerm: string) {
@@ -43,9 +43,7 @@ export class Favorite implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new PokemonActions.GetPokemonList());
-    
     //Đông bộ hóa danh sách yêu thích khi trang được tải lại
     this.store.dispatch(new FavoriteActions.LoadFavorites());
-  };
-
+  }
 }

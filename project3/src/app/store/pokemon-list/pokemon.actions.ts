@@ -11,7 +11,11 @@ export namespace PokemonActions {
   }
 
   export class SearchPokemon {
-  static readonly type = '[Pokemon] Search By Term';
-  constructor(public name: string) {}
+    static readonly type = '[Pokemon] Search By Term';
+    constructor(public name: string) {}
+  }
+  export class GetPokemonDetails {
+    static readonly type = '[Pokemon] Get Details (For Modal)';
+    constructor(public name: string) {}
   }
 }

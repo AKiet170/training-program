@@ -1,9 +1,14 @@
-<div class="flex flex-wrap justify-center items-center p-8">
+<div class="flex flex-wrap justify-center items-center p-4">
   <nz-card 
-    class="w-64 shadow-lg rounded-xl border-4" 
+    class="w-64 shadow-lg rounded-xl border-4 overflow-hidden no-body-padding" 
+    [ngClass]="{
+      'border-common': pokemon.rarity === 'Common',
+      'border-legendary': pokemon.rarity === 'Legendary',
+      'border-mythical': pokemon.rarity === 'Mythical'
+    }"
     [nzBordered]="false" 
+    [nzBodyStyle]="{ 'padding': '0px' }"
     [nzTitle]="pokemon.name" 
-    
     [nzActions]="[actionFav, actionDetails]" 
     [nzCover]="coverTemplate"
   >
@@ -12,9 +17,9 @@
 
 <ng-template #coverTemplate>
   <img 
-    [src]="imgUrl$ | async" 
+    [src]="pokemon.imgUrl" 
     alt="Pokemon Image" 
-    class="w-full h-40 object-cover" 
+    class="w-full h-250 object-cover" 
   />
 </ng-template>
 
@@ -49,19 +54,21 @@
     </div>
 
     <ng-template #loadedContent>
+      <ng-container *ngIf = "selectedPokemon$ | async as detail">
       <div class="text-center mb-5">
-        <img [src]="imgUrl$ | async" alt="Pokemon Sprite" class="w-40 h-40 mx-auto" />
+        <img [src]="detail.imgUrl" alt="Pokemon Sprite" class="w-40 h-40 mx-auto" />
       </div>
 
       <p class="text-lg font-semibold mb-2">Thông số cơ bản:</p>
-      <ul class="list-none p-0 space-y-2" *ngIf="stats$ | async as stats">
-        @for (stat of stats; track stat.stat.name) {
+      <ul class="list-none p-0 space-y-2" *ngIf="selectedPokemon$ | async as selectedPokemon">
+        @for (stat of detail.stats; track stat.stat.name) {
         <li class="flex justify-between border-b border-gray-200 pb-1">
           {{ stat.stat.name | uppercase }}:
           <span class="text-sm font-medium text-gray-600">{{ stat.base_stat }}</span>
         </li>
         }
       </ul>
+      </ng-container>
     </ng-template>
   </ng-container>
 </nz-modal>
