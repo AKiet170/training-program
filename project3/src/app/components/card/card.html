@@ -8,12 +8,36 @@
     }"
     [nzBordered]="false" 
     [nzBodyStyle]="{ 'padding': '0px' }"
-    [nzTitle]="pokemon.name" 
+    [nzTitle]="titleTemplate" 
     [nzActions]="[actionFav, actionDetails]" 
     [nzCover]="coverTemplate"
   >
   </nz-card>
 </div>
+
+<ng-template #titleTemplate>
+  <div class="flex items-center justify-between">
+    
+    <span 
+      class="font-bold truncate pr-2" 
+      [ngClass]="'text-' + (pokemon.element | lowercase)"
+      title="{{ pokemon.name | titlecase }}">
+      {{ pokemon.name | titlecase }}
+    </span>
+
+    <div 
+      class="flex-shrink-0 rounded-full p-1 w-8 h-8 flex items-center justify-center shadow-sm"
+      [ngClass]="'bg-' + (pokemon.element | lowercase)" 
+      title="Hệ: {{ pokemon.element | titlecase }}">
+      
+      <img 
+        [src]="getTypeIcon(pokemon.element)" 
+        [alt]="pokemon.element"
+        class="w-5 h-5 object-contain filter drop-shadow-md"
+      />
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #coverTemplate>
   <img 

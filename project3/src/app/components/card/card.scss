@@ -25,3 +25,48 @@
   background-clip: padding-box, border-box;
   @apply shadow-xl shadow-purple-600/70;
 }
+
+/* card.scss */
+
+// 1. Định nghĩa Map màu sắc (Pokémon Type Colors Standard)
+$type-colors: (
+  normal:   #A8A77A,
+  fire:     #EE8130,
+  water:    #6390F0,
+  electric: #F7D02C,
+  grass:    #7AC74C,
+  ice:      #96D9D6,
+  fighting: #C22E28,
+  poison:   #A33EA1,
+  ground:   #E2BF65,
+  flying:   #A98FF3,
+  psychic:  #F95587,
+  bug:      #A6B91A,
+  rock:     #B6A136,
+  ghost:    #735797,
+  dragon:   #6F35FC,
+  dark:     #705746,
+  steel:    #B7B7CE,
+  fairy:    #D685AD,
+  default:  #777777 // Màu mặc định nếu không tìm thấy hệ
+);
+
+// 2. Vòng lặp sinh ra các class tự động
+@each $type, $color in $type-colors {
+  
+  // Class cho màu nền (Ví dụ: Badge hệ)
+  .bg-#{$type} {
+    background-color: $color;
+    color: #fff; // Chữ trắng cho nổi
+  }
+
+  // Class cho màu chữ (Ví dụ: Tên hệ)
+  .text-#{$type} {
+    color: $color;
+  }
+
+  // Class cho viền (Nếu bạn muốn viền theo hệ thay vì theo độ hiếm)
+  .border-#{$type} {
+    border-color: $color;
+  }
+}

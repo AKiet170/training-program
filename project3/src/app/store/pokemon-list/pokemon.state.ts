@@ -70,7 +70,7 @@ export class PokemonState {
     // Duyệt qua pokemonList (List này có thể là 20 con hoặc 1 con do Search)
     return state.pokemonList.map((basicPokemon) => {
       const details = detailsMap[basicPokemon.name] || {}; 
-      
+
       return {
         name: basicPokemon.name,
         // Fallback image nếu chưa load kịp
@@ -79,7 +79,7 @@ export class PokemonState {
         isFavorite: favoriteSet.has(basicPokemon.name),
         // Các dữ liệu khác nếu cần truyền xuống Card
         stats: details.stats,
-        types: details.types
+        element: details.element
       };
     });
   }
@@ -221,7 +221,7 @@ export class PokemonState {
         name: details.name,
         imgUrl: details.sprites.front_default,
         stats: details.stats,
-        types: details.types,
+        element: details.types[0].type.name,
         // Logic Rarity
         is_mythical: species.is_mythical,
         is_legendary: species.is_legendary,

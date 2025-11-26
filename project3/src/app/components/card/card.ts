@@ -16,6 +16,7 @@ export interface CardViewModel {
   imgUrl: string;
   rarity: 'Common' | 'Legendary' | 'Mythical';
   isFavorite: boolean;
+  element: string;
 }
 
 const TYPE_ICON_MAP: { [key: string]: string } = {
@@ -65,6 +66,10 @@ export class Card implements OnInit {
 
   isVisibleTop = false;
   isVisibleMiddle = false;
+
+  getTypeIcon(type: string): string {
+    return TYPE_ICON_MAP[type];
+  }
 
   showModalTop(): void {
     this.isVisibleTop = true;
