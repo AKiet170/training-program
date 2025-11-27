@@ -1,20 +1,29 @@
-<header>
-  <nav class="container px-4 flex justifiy-start items-center">
-    <ul class="flex space-x-2">
+<header class="bg-slate-900 shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
+    
+    <div class="text-white font-bold text-xl tracking-wider mr-6">
+      <span class="text-indigo-500">Poké</span>App
+    </div>
+
+    <ul class="flex space-x-4">
       <li>
         <a routerLink="/home" 
-           routerLinkActive="bg-indigo-600 text-white"
-           class="cursor-pointer px-3 py-2 rounded-md text-white font-medium hover:bg-gray-100 transition-colors duration-200">
+           routerLinkActive="bg-indigo-600 text-white shadow-indigo-500/50 shadow-md"
+           [routerLinkActiveOptions]="{ exact: true }"
+           class="px-4 py-2 rounded-lg text-gray-300 font-medium hover:bg-slate-800 hover:text-white cursor-pointer">
            Home
         </a>
       </li>
       <li>
         <a routerLink="/favorite" 
-           routerLinkActive="bg-indigo-600 text-white"
-           class="cursor-pointer px-3 py-2 rounded-md text-white font-medium hover:bg-gray-100 transition-colors duration-200">
+           routerLinkActive="bg-indigo-600 text-white shadow-indigo-500/50 shadow-md"
+           class="px-4 py-2 rounded-lg text-gray-300 font-medium hover:bg-slate-800 hover:text-white cursor-pointer">
            Favorites
         </a>
       </li>
     </ul>
+
+    <div class="hidden md:block">
+      </div>
   </nav>
 </header>

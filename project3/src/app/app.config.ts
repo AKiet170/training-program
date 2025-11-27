@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { importProvidersFrom } from '@angular/core'; 
+import { NgxEchartsModule } from 'ngx-echarts'; 
 import { routes } from './app.routes';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -16,7 +17,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes), provideNzI18n(en_US), provideAnimationsAsync(), provideHttpClient(), provideStore(
-[PokemonState, FavoriteState]),
+    provideRouter(routes), provideNzI18n(en_US), provideAnimationsAsync(), provideHttpClient(), provideStore([PokemonState, FavoriteState]),
+    importProvidersFrom(
+      NgxEchartsModule.forRoot({
+        echarts: () => import('echarts') 
+      })),
   ]
 };

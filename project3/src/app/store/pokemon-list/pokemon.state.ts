@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
-import { PokemonService } from '../../services/pokemon'; // Đảm bảo đường dẫn đúng
-import { FavoriteState, FavoriteStateModel } from '../favorite/favorite.state'; // Đảm bảo đường dẫn đúng
-import { PokemonActions } from './pokemon.actions'; // Import Actions
+import { PokemonService } from '../../services/pokemon'; 
+import { FavoriteState, FavoriteStateModel } from '../favorite/favorite.state'; 
+import { PokemonActions } from './pokemon.actions'; 
 
-// 1. Interfaces
 export interface Pokemon {
   name: string;
   url: string;
@@ -20,10 +19,12 @@ export interface PokemonResponse {
 }
 
 export interface PokemonStateModel {
-  pokemonList: Pokemon[];          // Danh sách hiển thị (20 con hoặc 1 con khi search)
+  pokemonList: Pokemon[];          
   pokemonDetailsMap: Record<string, any>; // Kho chứa dữ liệu chi tiết (Dùng chung cho cả Card và Modal)
   selectedPokemonName: string | null;     // Tên Pokemon đang được mở Modal
   count: number;
+  pageIndex: number;
+  pageSize: number;
   loading: boolean;
   next: string | null;
   previous: string | null;
@@ -31,12 +32,14 @@ export interface PokemonStateModel {
 }
 
 @State<PokemonStateModel>({
-  name: 'pokemon', // Tên State
+  name: 'pokemon', 
   defaults: {
     pokemonList: [],
     pokemonDetailsMap: {},
     selectedPokemonName: null,
     count: 0,
+    pageIndex: 1,
+    pageSize: 20,
     loading: false,
     next: null,
     previous: null,
@@ -45,11 +48,10 @@ export interface PokemonStateModel {
 })
 @Injectable()
 export class PokemonState {
-  constructor(private pokemonService: PokemonService) {}
-
-  // =================================================================
-  // SELECTORS (Lấy dữ liệu ra UI)
-  // =================================================================
+  constructor(
+    private pokemonService: PokemonService,
+    private store: Store
+  ) {}
 
   @Selector()
   static isLoading(state: PokemonStateModel): boolean {
@@ -57,11 +59,21 @@ export class PokemonState {
   }
 
   @Selector()
-  static getCount(state: PokemonStateModel): number{
-    return state.count
+  static getPageIndex(state: PokemonStateModel): number {
+    return state.pageIndex;
   }
 
-  // Selector dùng cho GRID (Danh sách thẻ bài)
+  @Selector()
+  static getTotal(state: PokemonStateModel): number {
+    return state.count;
+  }
+
+  @Selector()
+  static getPageSize(state: PokemonStateModel): number {
+    return state.pageSize;
+  }
+
+  // Selector dùng cho GRID
   @Selector([PokemonState, FavoriteState])
   static getCardViewModel(state: PokemonStateModel, favState: FavoriteStateModel): any[] {
     const favoriteSet = new Set(favState.favoriteIds);
@@ -73,42 +85,39 @@ export class PokemonState {
 
       return {
         name: basicPokemon.name,
-        // Fallback image nếu chưa load kịp
+
         imgUrl: details.imgUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.extractId(basicPokemon.url)}.png`, 
-        rarity: details.rarity || 'Common', // Default Common
+        rarity: details.rarity || 'Common', 
         isFavorite: favoriteSet.has(basicPokemon.name),
-        // Các dữ liệu khác nếu cần truyền xuống Card
         stats: details.stats,
         element: details.element
       };
     });
   }
 
-  // Selector dùng cho MODAL (Chi tiết 1 con)
-  // Thay thế cho toàn bộ Selector cũ bên file pokemon-details.state.ts
+  // Selector dùng cho MODAL
   @Selector()
   static getSelectedPokemon(state: PokemonStateModel) {
     if (!state.selectedPokemonName) return null;
     return state.pokemonDetailsMap[state.selectedPokemonName];
   }
 
-  // Helper function để lấy ID từ URL (dùng để hiện ảnh tạm thời)
+  // Helper function để lấy ID từ URL 
   private static extractId(url: string): string {
     if (!url) return '';
     const parts = url.split('/');
     return parts[parts.length - 2];
   }
 
-  // =================================================================
-  // ACTIONS (Xử lý Logic)
-  // =================================================================
-
-  // 1. Lấy danh sách 20 con (Logic cũ đã tối ưu)
   @Action(PokemonActions.GetPokemonList)
   fetchPokemon(ctx: StateContext<PokemonStateModel>) {
     ctx.patchState({ loading: true, error: null });
+    
+    const state = ctx.getState();
+    const offset = (state.pageIndex - 1) * state.pageSize;
+    const limit = state.pageSize;
 
-    return this.pokemonService.getPokemonList().pipe(
+    return this.pokemonService.getPokemonList(offset, limit).pipe(
       switchMap((response: PokemonResponse) => {
         // Lưu danh sách cơ bản
         ctx.patchState({
@@ -135,7 +144,16 @@ export class PokemonState {
     );
   }
 
-  // 2. Chức năng Search (ĐÃ SỬA ĐỂ FIX LỖI RENDER)
+  @Action(PokemonActions.ChangePage)
+  changePage(ctx: StateContext<PokemonStateModel>, action: PokemonActions.ChangePage) {
+    // Cập nhật PageIndex mới vào State
+    ctx.patchState({ pageIndex: action.pageIndex });
+    
+    // Gọi lại Action lấy danh sách (nó sẽ tự tính offset mới dựa trên pageIndex vừa update)
+    return ctx.dispatch(new PokemonActions.GetPokemonList());
+  }
+
+  // Chức năng Search 
   @Action(PokemonActions.SearchPokemon)
   searchPokemon(ctx: StateContext<PokemonStateModel>, action: PokemonActions.SearchPokemon) {
     ctx.patchState({ loading: true, error: null });
@@ -205,10 +223,50 @@ export class PokemonState {
     );
   }
 
+@Action(PokemonActions.GetFavoriteList)
+  getFavoriteList(ctx: StateContext<PokemonStateModel>) {
+    ctx.patchState({ loading: true, error: null });
 
-  // =================================================================
-  // HELPERS (Hàm phụ trợ dùng chung)
-  // =================================================================
+    // 1. Lấy danh sách ID yêu thích từ FavoriteState (Snapshot)
+    const favoriteIds = this.store.selectSnapshot(FavoriteState.getFavoriteIds);
+
+    // Nếu không có favorite nào
+    if (!favoriteIds || favoriteIds.length === 0) {
+      ctx.patchState({
+        loading: false,
+        pokemonList: [], // Danh sách rỗng
+        count: 0
+      });
+      return of(null);
+    }
+
+    // 2. Tạo mảng request để lấy chi tiết cho TỪNG favorite ID
+    // Tận dụng hàm fetchDetailAndSpecies có sẵn để lấy full thông tin (ảnh, rarity...)
+    const requests = favoriteIds.map(id => this.fetchDetailAndSpecies(id));
+
+    // 3. Chạy song song tất cả request
+    return forkJoin(requests).pipe(
+      tap((favoritesDetails: any[]) => {
+        // Cập nhật Details Map (để cache)
+        this.updateDetailsMap(ctx, favoritesDetails);
+
+        // Cập nhật pokemonList với danh sách favorite vừa tải
+        ctx.patchState({
+          loading: false,
+          pokemonList: favoritesDetails.map(d => ({
+            name: d.name,
+            url: `https://pokeapi.co/api/v2/pokemon/${d.id}/`
+            // Các dữ liệu khác đã được lưu trong detailsMap và sẽ được Selector getCardViewModel lấy ra
+          })),
+          count: favoritesDetails.length
+        });
+      }),
+      catchError(err => {
+        ctx.patchState({ loading: false, error: err.message });
+        return of(null);
+      })
+    );
+  }
 
   // Helper: Gọi API Details + Species và normalize dữ liệu
   private fetchDetailAndSpecies(name: string) {
@@ -222,7 +280,6 @@ export class PokemonState {
         imgUrl: details.sprites.front_default,
         stats: details.stats,
         element: details.types[0].type.name,
-        // Logic Rarity
         is_mythical: species.is_mythical,
         is_legendary: species.is_legendary,
         rarity: species.is_mythical ? 'Mythical' : 
@@ -236,10 +293,9 @@ export class PokemonState {
     const currentState = ctx.getState();
     
     const newDetailsMap = newDetails.reduce((acc, item) => {
-      acc[item.name] = item; // Key là tên Pokemon
+      acc[item.name] = item; 
       return acc;
-    }, { ...currentState.pokemonDetailsMap }); // Merge với map cũ
-
+    }, { ...currentState.pokemonDetailsMap }); 
     ctx.patchState({
       loading: false,
       pokemonDetailsMap: newDetailsMap

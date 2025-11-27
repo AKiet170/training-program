@@ -30,7 +30,7 @@ export class Favorite implements OnInit {
   searchResults: string = '';
 
   constructor(private store: Store) {
-    this.count$ = this.store.select(PokemonState.getCount);
+    this.count$ = this.store.select(PokemonState.getTotal);
     this.loading$ = this.store.select(PokemonState.isLoading);
     this.cardViewModel$ = this.store.select(PokemonState.getCardViewModel)
   }
@@ -42,8 +42,9 @@ export class Favorite implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new PokemonActions.GetPokemonList());
-    //Đông bộ hóa danh sách yêu thích khi trang được tải lại
-    this.store.dispatch(new FavoriteActions.LoadFavorites());
+    this.store.dispatch(new FavoriteActions.LoadFavorites()).subscribe(() => {
+      // Gọi Action lấy chi tiết các Pokemon trong favorite
+      this.store.dispatch(new PokemonActions.GetFavoriteList());
+    })
   }
 }

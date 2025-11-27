@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchBar } from '../../components/search-bar/search-bar';
 import { FormsModule } from '@angular/forms';
-
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { Card } from '../../components/card/card';
-import { Store, Select} from '@ngxs/store';
-import { Observable, take } from 'rxjs';
+import { Store} from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { PokemonActions } from '../../store/pokemon-list/pokemon.actions';
-import { Pokemon, PokemonState } from '../../store/pokemon-list/pokemon.state';
+import { PokemonState } from '../../store/pokemon-list/pokemon.state';
 import { AsyncPipe } from '@angular/common';
 import { FavoriteActions } from '../../store/favorite/favorite.actions';
 
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, NzGridModule, NzSliderModule, SearchBar, Card, AsyncPipe],
+  imports: [FormsModule, NzGridModule, NzSliderModule, SearchBar, Card, AsyncPipe, NzPaginationModule],
   templateUrl: './home.html',
   styleUrl: './home.scss'
   
@@ -26,16 +26,30 @@ export class Home implements OnInit {
   count = 4;
   array = new Array(20);
 
-  count$!: Observable<number>;
+  pageIndex$: Observable<number>;
+  pageSize$: Observable<number>;
+  total$: Observable<number>;
   loading$!: Observable<boolean>;
   cardViewModel$!: Observable<any[]>;
 
   searchResults: string = '';
 
   constructor(private store: Store) {
-    this.count$ = this.store.select(PokemonState.getCount);
+    this.total$ = this.store.select(PokemonState.getTotal);
     this.loading$ = this.store.select(PokemonState.isLoading);
     this.cardViewModel$ = this.store.select(PokemonState.getCardViewModel)
+    this.pageIndex$ = this.store.select(PokemonState.getPageIndex)
+    this.pageSize$ = this.store.select(PokemonState.getPageSize)
+  }
+
+  onPageIndexChange(newPageIndex: number) {
+    this.store.dispatch(new PokemonActions.ChangePage(newPageIndex));
+    
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
   }
 
   handleSearch(searchTerm: string) {

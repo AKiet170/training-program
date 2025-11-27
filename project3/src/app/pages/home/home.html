@@ -12,6 +12,17 @@
         
       </div>
     }
-
   </div>
+</div>
+
+<div class="flex justify-center py-8 mt-4 bg-white shadow-inner">
+  <nz-pagination
+    [nzPageIndex]="pageIndex$ | async"
+    [nzTotal]="total$ | async"
+    [nzPageSize]="pageSize$ | async"
+    (nzPageIndexChange)="onPageIndexChange($event)"
+    [nzShowQuickJumper]="true"
+    [nzShowSizeChanger]="false"
+  >
+  </nz-pagination>
 </div>

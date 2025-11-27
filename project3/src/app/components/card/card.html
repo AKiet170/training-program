@@ -34,6 +34,7 @@
         [src]="getTypeIcon(pokemon.element)" 
         [alt]="pokemon.element"
         class="w-5 h-5 object-contain filter drop-shadow-md"
+        loading="lazy"
       />
     </div>
   </div>
@@ -44,6 +45,7 @@
     [src]="pokemon.imgUrl" 
     alt="Pokemon Image" 
     class="w-full h-250 object-cover" 
+    loading="lazy"
   />
 </ng-template>
 
@@ -70,7 +72,8 @@
   nzTitle="Chi tiết Pokémon: {{ pokemon.name }}" 
   nzCentered
   (nzOnCancel)="handleCancelMiddle()" 
-  (nzOnOk)="handleOkMiddle()">
+  (nzOnOk)="handleOkMiddle()"
+  [nzFooter]="modalFooter">
   
   <ng-container *nzModalContent>
     <div *ngIf="isLoading$ | async; else loadedContent">
@@ -80,19 +83,16 @@
     <ng-template #loadedContent>
       <ng-container *ngIf = "selectedPokemon$ | async as detail">
       <div class="text-center mb-5">
-        <img [src]="detail.imgUrl" alt="Pokemon Sprite" class="w-40 h-40 mx-auto" />
+        <img [src]="detail.imgUrl" alt="Pokemon Sprite" class="w-40 h-40 mx-auto" loading="lazy"/>
       </div>
 
       <p class="text-lg font-semibold mb-2">Thông số cơ bản:</p>
-      <ul class="list-none p-0 space-y-2" *ngIf="selectedPokemon$ | async as selectedPokemon">
-        @for (stat of detail.stats; track stat.stat.name) {
-        <li class="flex justify-between border-b border-gray-200 pb-1">
-          {{ stat.stat.name | uppercase }}:
-          <span class="text-sm font-medium text-gray-600">{{ stat.base_stat }}</span>
-        </li>
-        }
-      </ul>
+      <div echarts [options]="chartOption" class="demo-chart" style="height: 300px;"></div>
       </ng-container>
     </ng-template>
   </ng-container>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="handleOkMiddle()">Đóng</button>
+  </ng-template>
 </nz-modal>
